@@ -7,4 +7,6 @@
     <string name="to">To</string>
     <string name="amount">Amount</string>
     <string name="value">Value</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="no_internet">No Internet</string>
 </resources>
