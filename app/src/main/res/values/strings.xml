@@ -9,4 +9,8 @@
     <string name="value">Value</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="no_internet">No Internet</string>
+    <string name="details">details</string>
+    <string name="date">Date : </string>
+    <string name="value1">Value ( %s ) : </string>
+
 </resources>

@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/from"
             dropList="@{viewModel.currencyListLiveData}"
+            dropListSelection="@{viewModel.fromCurrency}"
             app:layout_constraintEnd_toStartOf="@id/switch_icon"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -36,7 +37,9 @@
             <AutoCompleteTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none" />
+                android:inputType="none"
+                android:afterTextChanged="@{viewModel::updateFromCurrency}"
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -46,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:padding="5dp"
+            android:onClick="@{() -> viewModel.swapValues()}"
             android:src="@drawable/baseline_switch_right_24"
             app:layout_constraintBottom_toBottomOf="@id/from_menu"
             app:layout_constraintEnd_toStartOf="@id/to_menu"
@@ -59,6 +63,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/to"
             dropList="@{viewModel.currencyListLiveData}"
+            dropListSelection="@{viewModel.toCurrency}"
             app:layout_constraintBottom_toBottomOf="@id/from_menu"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/switch_icon"
@@ -67,6 +72,7 @@
             <AutoCompleteTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:afterTextChanged="@{viewModel::updateToCurrency}"
                 android:inputType="none" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -86,8 +92,10 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@={viewModel.amount}"
+                android:afterTextChanged="@{viewModel::updateAmount}"
                 android:inputType="number"
-                android:text="1" />
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,9 +113,23 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false" />
+                android:enabled="false"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="@{String.valueOf(viewModel.convertResultLiveData.result)}"/>
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/details_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/details"
+            android:onClick="@{viewModel::navigateToDetails}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/amountTextField" />
 
 
         <LinearLayout

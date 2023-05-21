@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.NavHostFragment
 import com.project.currencyapp.data.source.repository.currencyRepository
 import com.project.currencyapp.databinding.FragmentHomeBinding
 
@@ -34,7 +35,20 @@ class HomeFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
+        destinationObserve()
         return root
+    }
+
+    private fun destinationObserve() {
+
+        viewModel.navigateDestination.observe(viewLifecycleOwner) {
+            it?.let {
+                var bundle = Bundle()
+                bundle.putString("base",viewModel.fromCurrency.value.toString())
+                bundle.putString("symbols",viewModel.toCurrency.value.toString())
+                    NavHostFragment.findNavController(this).navigate(it,bundle) }
+
+        }
     }
 
 
