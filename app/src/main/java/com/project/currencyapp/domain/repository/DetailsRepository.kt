@@ -1,10 +1,8 @@
 package com.project.currencyapp.domain.repository
 
-import com.project.currencyapp.domain.models.CurrencySymbolsResponse
 import com.project.currencyapp.domain.models.common.ResponseWrapper
-import com.project.currencyapp.domain.models.convert.CurrencyConvertResponse
-import com.project.currencyapp.domain.models.history.ConvertHistoryResponse
-import retrofit2.http.Query
+import com.project.currencyapp.domain.models.history.HistoryRatesResponse
+import com.project.currencyapp.domain.models.latest.LatestRatesResponse
 
 interface DetailsRepository {
 
@@ -13,5 +11,9 @@ interface DetailsRepository {
         symbols: String,
         startDate: String,
         endDate: String
-    ): ResponseWrapper<ConvertHistoryResponse>
+    ): ResponseWrapper<HistoryRatesResponse>
+
+    suspend fun getLatestRates(
+        base: String
+    ): ResponseWrapper<LatestRatesResponse>
 }

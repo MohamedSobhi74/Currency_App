@@ -1,6 +1,6 @@
 package com.project.currencyapp.domain.models.history
 
-data class ConvertHistoryResponse(
+data class HistoryRatesResponse(
     val base: String,
     val end_date: String,
     val rates: Map<String,Map<String,Double>>,

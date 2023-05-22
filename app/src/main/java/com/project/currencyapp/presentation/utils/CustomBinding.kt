@@ -7,10 +7,17 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.anychart.AnyChart
+import com.anychart.AnyChartView
+import com.anychart.chart.common.dataentry.DataEntry
+import com.anychart.chart.common.dataentry.ValueDataEntry
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
-import com.project.currencyapp.domain.models.history.ConvertHistoryResponse
+import com.project.currencyapp.domain.models.history.HistoryRatesResponse
+import com.project.currencyapp.domain.models.latest.LatestRatesResponse
 import com.project.currencyapp.presentation.ui.adapters.HistoryAdapter
+import com.project.currencyapp.presentation.ui.adapters.LatestRatesAdapter
+
 
 object CustomBinding {
     @JvmStatic
@@ -49,8 +56,43 @@ object CustomBinding {
     }
 
     @JvmStatic
-    @BindingAdapter("actorsList")
-    fun bindActorList(recyclerView: RecyclerView, historyResponse: ConvertHistoryResponse?) {
+    @BindingAdapter("historyRatesList")
+    fun bindHistoryList(recyclerView: RecyclerView, historyResponse: HistoryRatesResponse?) {
         historyResponse?.let { recyclerView.adapter = HistoryAdapter(it) }
+    }
+
+    @JvmStatic
+    @BindingAdapter("latestRatesList")
+    fun bindLatestList(recyclerView: RecyclerView, latestRatesResponse: LatestRatesResponse?) {
+        latestRatesResponse?.let { recyclerView.adapter = LatestRatesAdapter(it) }
+    }
+
+    @JvmStatic
+    @BindingAdapter("chartValues")
+    fun bindChart(chart: AnyChartView, historyResponse: HistoryRatesResponse?) {
+
+        historyResponse?.let {
+            val rates = historyResponse!!.rates
+            val column = AnyChart.column()
+            val dataEntryList: MutableList<DataEntry> = ArrayList()
+
+
+
+            for (position in 0 until rates.keys.size) {
+
+                val date = historyResponse.rates.keys.toList().get(position)
+                val symbol =
+                    historyResponse.rates.values.toList().get(position).keys.toList().get(0)
+                val value =
+                    historyResponse.rates.values.toList().get(position).values.toList().get(0)
+
+                dataEntryList.add(ValueDataEntry(date, value))
+
+
+            }
+            column.data(dataEntryList)
+            chart.setChart(column)
+        }
+
     }
 }

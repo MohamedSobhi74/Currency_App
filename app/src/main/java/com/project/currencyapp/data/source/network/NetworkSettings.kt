@@ -18,42 +18,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
-// retrofit initialization on demand by lazy
-val retrofit: Retrofit by lazy {
-    Retrofit.Builder()
-        .baseUrl(Constants.BASE_URL)
-        .addCallAdapterFactory(CoroutineCallAdapterFactory())
-        .addConverterFactory(GsonConverterFactory.create())
-        .client(client)
-        .build()
-}
-
-
-// log interceptor initialization for api tracking log
-private val interceptor = HttpLoggingInterceptor()
-
-// OkHttpClient initialization on demand by lazy
-private val client by lazy {
-
-    // tell logging interceptor to log apis body
-    interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-
-    val clientBuilder = OkHttpClient.Builder()
-    clientBuilder.connectTimeout(15, TimeUnit.SECONDS) // request connect timeout
-    clientBuilder.readTimeout(15, TimeUnit.SECONDS)  // socket timeout
-
-    // add logging interceptor to client
-    clientBuilder.addInterceptor(interceptor)
-
-    // add api key to header using interceptor with client
-    clientBuilder.addInterceptor { chain ->
-        val request: Request =
-            chain.request().newBuilder().addHeader("apikey", Constants.API_KEY).build()
-        chain.proceed(request)
-    }
-
-    clientBuilder.build()
-}
 
 // general api call for all apis
 suspend fun <T> safeApiCall(

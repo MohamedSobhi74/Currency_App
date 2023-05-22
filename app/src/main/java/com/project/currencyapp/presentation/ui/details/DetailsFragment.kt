@@ -4,15 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import com.project.currencyapp.data.source.repository.currencyRepository
-import com.project.currencyapp.data.source.repository.detailsRepository
-import com.project.currencyapp.databinding.FragmentDetailsBinding
-import com.project.currencyapp.presentation.ui.home.HomeViewModel
 
+import com.project.currencyapp.databinding.FragmentDetailsBinding
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
 class DetailsFragment : Fragment() {
 
     private var _binding: FragmentDetailsBinding? = null
@@ -21,10 +19,7 @@ class DetailsFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val viewModel: DetailsViewModel by viewModels {
-        DetailsViewModel.Factory(detailsRepository)
-    }
-
+    private val viewModel: DetailsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,13 +33,8 @@ class DetailsFragment : Fragment() {
         binding.viewModel = viewModel
 
         val bundle = arguments
-     /*   viewModel.base = bundle!!.getString("base")
-        viewModel.symbols = bundle!!.getString("symbols")*/
-
-     /*   binding.baseTv.text = "AED"
-        binding.symbolTv.text = "EGP"*/
-        viewModel.base.value = "AED"
-        viewModel.symbols.value = "EGP"
+        viewModel.base.value = bundle!!.getString("base")
+        viewModel.symbols.value= bundle.getString("symbols")
         viewModel.getConvertHistory()
 
 

@@ -8,9 +8,12 @@ import com.project.currencyapp.domain.models.common.ResponseWrapper
 import com.project.currencyapp.domain.models.convert.CurrencyConvertResponse
 import com.project.currencyapp.domain.repository.CurrencyRepository
 import com.project.currencyapp.presentation.ui.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel(val repository: CurrencyRepository) : BaseViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(val repository: CurrencyRepository) : BaseViewModel() {
 
 
     val currencyListLiveData: LiveData<Set<String>>
@@ -85,21 +88,22 @@ class HomeViewModel(val repository: CurrencyRepository) : BaseViewModel() {
 
     fun navigateToDetails(view: View) {
 
-        /* if (!_fromCurrency.value.isNullOrEmpty()
-             && !_toCurrency.value.isNullOrEmpty()
-         ) {*/
-        _navigateDestination.value = R.id.action_navigation_home_to_detailsFragment
-        _navigateDestination.value = null
-        /*  }else{
-              _showMessage.value = "Please Select Currencies"
-          }
-          */
+        if (!_fromCurrency.value.isNullOrEmpty()
+            && !_toCurrency.value.isNullOrEmpty()
+        ) {
+            _navigateDestination.value = R.id.action_navigation_home_to_detailsFragment
+            _navigateDestination.value = null
+            _showMessage.value = null
+        } else {
+            _showMessage.value = "Please Select Currencies"
+        }
+
 
     }
 
     init {
         // get all currency symbols when viewModel get initialized
-        //   getCurrencySymbols()
+        getCurrencySymbols()
     }
 
 

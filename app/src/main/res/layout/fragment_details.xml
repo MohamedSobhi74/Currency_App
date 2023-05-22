@@ -16,6 +16,31 @@
         android:layout_height="match_parent"
         tools:context=".presentation.ui.details.DetailsFragment">
 
+
+        <TextView
+            android:id="@+id/symbol1_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginTop="16dp"
+            android:text="@={viewModel.symbols}"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+
+        <com.anychart.AnyChartView
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            chartValues="@{viewModel.historyResponseLiveData}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/symbol1_tv"/>
+
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
@@ -23,7 +48,7 @@
             android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="@+id/history_recyclerView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/chart">
 
             <TextView
                 android:id="@+id/base_tv"
@@ -59,22 +84,36 @@
             android:layout_marginTop="16sp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            actorsList="@{viewModel.convertHistoryResponseLiveData}"
+            historyRatesList="@{viewModel.historyResponseLiveData}"
             tools:listitem="@layout/history_item"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/other_currencies_recyclerView"
+            app:layout_constraintEnd_toStartOf="@id/view1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
+        <View
+            android:id="@+id/view1"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="#C4C4C4"
+            app:layout_constraintStart_toEndOf="@id/history_recyclerView"
+            app:layout_constraintTop_toTopOf="@id/linearLayout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/other_currencies_recyclerView"
+            />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/other_currencies_recyclerView"
+            latestRatesList="@{viewModel.latestHistoryRatesResponseLiveData}"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/history_recyclerView"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@id/view1"
+            app:layout_constraintTop_toTopOf="@+id/history_recyclerView"
+            tools:listitem="@layout/history_item" />
 
         <LinearLayout
             android:layout_width="match_parent"
